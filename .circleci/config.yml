@@ -28,8 +28,8 @@ jobs:
       XCODE_SCHEME: stock.goodcity
     # The `macos` block requests that builds will run on a machine running
     # macOS with the specified version of Xcode installed
-    macos:
-      xcode: '9.2'
+    # macos:
+    #   xcode: '9.2'
     steps:
     # Machine Setup
     #   If you break your build into multiple jobs with workflows, you will probably want to do the parts of this that are relevant in each
@@ -40,9 +40,9 @@ jobs:
     # 'See docs on artifact collection here https://circleci.com/docs/2.0/artifacts/'
     - run: mkdir -p $CIRCLE_ARTIFACTS $CIRCLE_TEST_REPORTS
     # The following line was run implicitly in your 1.0 builds based on what CircleCI inferred about the structure of your project. In 2.0 you need to be explicit about which commands should be run. In some cases you can discard inferred commands if they are not relevant to your project.
-    - run:
-        working_directory: ~/crossroads/stock.goodcity
-        command: xcodebuild -version
+    # - run:
+    #     working_directory: ~/crossroads/stock.goodcity
+    #     command: xcodebuild -version
     # Dependencies
     #   This would typically go in either a build or a build-and-test job when using workflows
     # Restore the dependency cache
@@ -81,7 +81,7 @@ jobs:
         paths:
         # This is a broad list of cache paths to include many possible development environments
         # You can probably delete some of these entries
-        - vendor/bundle
+        - vendor/bundlet
         - ~/virtualenvs
         - ~/.m2
         - ~/.ivy2
