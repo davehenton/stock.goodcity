@@ -7,9 +7,15 @@
 # configuration as a reference rather than using it in production, though in most
 # cases it should duplicate the execution of your original 1.0 config.
 version: 2
+
+defaults: &defaults
+  macos:
+    xcode: "9.2.0"
+  working_directory: ~/crossroads/stock.goodcity
+
 jobs:
   build:
-    working_directory: ~/crossroads/stock.goodcity
+    <<: *defaults
 
     environment:
       XCODE_SCHEME: stock.goodcity
@@ -28,6 +34,8 @@ jobs:
       - run: xcodebuild -version
 
   checkout_code:
+    <<: *defaults
+
     steps:
       - checkout
       - run: xcodebuild -version
