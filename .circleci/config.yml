@@ -17,15 +17,11 @@ jobs:
   build:
     <<: *defaults
 
-    # environment:
-    #   BASH_ENV: ~/.bashrc
-
     steps:
       - run: xcodebuild -version
       - run:
           command: |
             echo 'export PATH="$PATH:$HOME/$CIRCLE_PROJECT_REPONAME/node_modules/.bin:$HOME/.yarn/bin:$ANDROID_HOME/tools"' >> $BASH_ENV
-            # source /home/circleci/.bashrc
 
     environment:
       XCODE_SCHEME: stock.goodcity
@@ -35,7 +31,6 @@ jobs:
       FL_TESTFAIRY_AUTO_UPDATE: "on"
       PILOT_SKIP_SUBMISSION: true
       ANDROID_HOME: "${HOME}/android-sdk"
-      # PATH: "$PATH:$HOME/$CIRCLE_PROJECT_REPONAME/node_modules/.bin:$HOME/.yarn/bin:$ANDROID_HOME/tools"
 
     macos:
       xcode: "9.2.0"
