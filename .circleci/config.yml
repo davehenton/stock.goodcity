@@ -11,24 +11,31 @@ jobs:
   build:
     working_directory: ~/crossroads/stock.goodcity
 
+    environment:
+      XCODE_SCHEME: stock.goodcity
+      GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx1024m -XX:+HeapDumpOnOutOfMemoryError"'
+      XCODE_WORKSPACE: stock.goodcity
+      GYM_CODE_SIGNING_IDENTITY: "iPhone Distribution: Crossroads Foundation Limited"
+      FL_TESTFAIRY_AUTO_UPDATE: "on"
+      PILOT_SKIP_SUBMISSION: true
+      ANDROID_HOME: "${HOME}/android-sdk"
+      # PATH: "${PATH}:${HOME}/${CIRCLE_PROJECT_REPONAME}/node_modules/.bin:$HOME/.yarn/bin:${ANDROID_HOME}/tools"
+
     macos:
       xcode: "9.2.0"
 
     steps:
+      - checkout
       - run: xcodebuild -version
-      - run:
-        environment:
-          GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx1024m -XX:+HeapDumpOnOutOfMemoryError"'
-          XCODE_SCHEME: stock.goodcity
-          XCODE_WORKSPACE: stock.goodcity
-          GYM_CODE_SIGNING_IDENTITY: "iPhone Distribution: Crossroads Foundation Limited"
-          FL_TESTFAIRY_AUTO_UPDATE: "on"
-          PILOT_SKIP_SUBMISSION: true
-          PILOT_WAIT_PROCESSING_INTERVAL: 60
-          ANDROID_HOME: "${HOME}/android-sdk"
-          PATH: "${PATH}:${HOME}/${CIRCLE_PROJECT_REPONAME}/node_modules/.bin:$HOME/.yarn/bin:${ANDROID_HOME}/tools"
 
-
+          # GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx1024m -XX:+HeapDumpOnOutOfMemoryError"'
+          # XCODE_WORKSPACE: stock.goodcity
+          # GYM_CODE_SIGNING_IDENTITY: "iPhone Distribution: Crossroads Foundation Limited"
+          # FL_TESTFAIRY_AUTO_UPDATE: "on"
+          # PILOT_SKIP_SUBMISSION: true
+          # PILOT_WAIT_PROCESSING_INTERVAL: 60
+          # ANDROID_HOME: "${HOME}/android-sdk"
+          # PATH: "${PATH}:${HOME}/${CIRCLE_PROJECT_REPONAME}/node_modules/.bin:$HOME/.yarn/bin:${ANDROID_HOME}/tools"
 
     # parallelism: 1
     # shell: /bin/bash --login
