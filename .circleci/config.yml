@@ -14,8 +14,21 @@ jobs:
     macos:
       xcode: "9.2.0"
 
-    steps:
-      - run: xcodebuild -version
+    environment:
+      GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx1024m -XX:+HeapDumpOnOutOfMemoryError"'
+      XCODE_SCHEME: stock.goodcity
+      XCODE_WORKSPACE: stock.goodcity
+      GYM_CODE_SIGNING_IDENTITY: "iPhone Distribution: Crossroads Foundation Limited"
+      FL_TESTFAIRY_AUTO_UPDATE: "on"
+      PILOT_SKIP_SUBMISSION: true
+      PILOT_WAIT_PROCESSING_INTERVAL: 60
+      ANDROID_HOME: "${HOME}/android-sdk"
+      PATH: "${PATH}:${HOME}/${CIRCLE_PROJECT_REPONAME}/node_modules/.bin:$HOME/.yarn/bin:${ANDROID_HOME}/tools"
+
+    # steps:
+    #   - run: xcodebuild -version
+
+
     # parallelism: 1
     # shell: /bin/bash --login
     # # CircleCI 2.0 does not support environment variables that refer to each other the same way as 1.0 did.
