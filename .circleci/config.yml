@@ -9,12 +9,13 @@
 version: 2
 jobs:
   build:
+    working_directory: ~/crossroads/stock.goodcity
+
     macos:
       xcode: "9.2.0"
 
     steps:
       - run: xcodebuild -version
-    # working_directory: ~/crossroads/stock.goodcity
     # parallelism: 1
     # shell: /bin/bash --login
     # # CircleCI 2.0 does not support environment variables that refer to each other the same way as 1.0 did.
