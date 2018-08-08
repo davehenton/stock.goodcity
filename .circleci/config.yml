@@ -25,6 +25,10 @@ jobs:
       xcode: "9.2.0"
 
     steps:
+      - run: xcodebuild -version
+
+  checkout_code:
+    steps:
       - checkout
       - run: xcodebuild -version
 
