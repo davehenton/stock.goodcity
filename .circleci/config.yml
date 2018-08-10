@@ -11,7 +11,7 @@ version: 2
 defaults: &defaults
     docker:
       - image: circleci/node:6-browsers
-    working_directory: ~/crossroads/stock.goodcity
+    working_directory: ~/stock.goodcity
 
 jobs:
   set_env_vars:
@@ -36,6 +36,10 @@ jobs:
 
     steps:
       - checkout
+      - save_cache:
+          key: v1-repo-{{ .Environment.CIRCLE_SHA1 }}
+          paths:
+            - ~/stock.goodcity
       - run:
           command: |
             yarn install
