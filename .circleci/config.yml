@@ -9,16 +9,15 @@
 version: 2
 
 defaults: &defaults
-  macos:
-    xcode: "9.2.0"
-  working_directory: ~/crossroads/stock.goodcity
+    docker:
+      - image: circleci/node:6-browsers
+    working_directory: ~/crossroads/stock.goodcity
 
 jobs:
   build:
     <<: *defaults
 
     steps:
-      - run: xcodebuild -version
       - run:
           command: |
             echo 'export PATH="$PATH:$HOME/$CIRCLE_PROJECT_REPONAME/node_modules/.bin:$HOME/.yarn/bin:$ANDROID_HOME/tools"' >> $BASH_ENV
@@ -32,15 +31,11 @@ jobs:
       PILOT_SKIP_SUBMISSION: true
       ANDROID_HOME: "${HOME}/android-sdk"
 
-    macos:
-      xcode: "9.2.0"
-
   checkout_code:
     <<: *defaults
 
     steps:
       - checkout
-      - run: xcodebuild -version
 
           # GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx1024m -XX:+HeapDumpOnOutOfMemoryError"'
           # XCODE_WORKSPACE: stock.goodcity
