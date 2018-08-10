@@ -18,9 +18,11 @@ jobs:
     <<: *defaults
 
     steps:
+      - checkout
       - run:
           command: |
             echo 'export PATH="$PATH:$HOME/$CIRCLE_PROJECT_REPONAME/node_modules/.bin:$HOME/.yarn/bin:$ANDROID_HOME/tools"' >> $BASH_ENV
+            yarn install
 
     environment:
       XCODE_SCHEME: stock.goodcity
@@ -36,6 +38,9 @@ jobs:
 
     steps:
       - checkout
+      - run:
+          command: |
+            yarn install
 
           # GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx1024m -XX:+HeapDumpOnOutOfMemoryError"'
           # XCODE_WORKSPACE: stock.goodcity
