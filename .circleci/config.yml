@@ -42,9 +42,10 @@ jobs:
 
 workflows:
     version: 2
-    jobs:
-      - set_env_vars
-      - checkout_code
+    build_and_bundle:
+      jobs:
+        - set_env_vars
+        - checkout_code
 
 
 
