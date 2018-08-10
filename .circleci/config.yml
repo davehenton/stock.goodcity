@@ -14,15 +14,13 @@ defaults: &defaults
     working_directory: ~/crossroads/stock.goodcity
 
 jobs:
-  build:
+  set_env_vars:
     <<: *defaults
 
     steps:
-      - checkout
       - run:
           command: |
             echo 'export PATH="$PATH:$HOME/$CIRCLE_PROJECT_REPONAME/node_modules/.bin:$HOME/.yarn/bin:$ANDROID_HOME/tools"' >> $BASH_ENV
-            yarn install
 
     environment:
       XCODE_SCHEME: stock.goodcity
@@ -41,6 +39,14 @@ jobs:
       - run:
           command: |
             yarn install
+
+workflows:
+    version: 2
+    jobs:
+      - set_env_vars
+      - checkout_code
+
+
 
           # GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx1024m -XX:+HeapDumpOnOutOfMemoryError"'
           # XCODE_WORKSPACE: stock.goodcity
