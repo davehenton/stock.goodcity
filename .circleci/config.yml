@@ -47,7 +47,9 @@ jobs:
     steps:
       - run:
           name: Yarn Install
-          command: yarn install
+          command: |
+            yarn install
+            yarn run bower install
 
 
 workflows:
