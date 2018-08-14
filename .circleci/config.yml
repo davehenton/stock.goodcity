@@ -12,6 +12,8 @@ defaults: &defaults
     docker:
       - image: circleci/node:6-browsers
     working_directory: ~/stock.goodcity
+restore-repo-cache: &restore-repo-cache
+    key: v1-repo-{{ .Environment.CIRCLE_SHA1 }}
 
 jobs:
   set_env_vars:
@@ -45,6 +47,7 @@ jobs:
     <<: *defaults
 
     steps:
+      - restore-cache: *restore-repo-cache
       - run:
           name: Yarn Install
           command: |
