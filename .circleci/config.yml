@@ -53,6 +53,21 @@ jobs:
           command: |
             yarn install
             yarn run bower install
+      # - run:
+      #     command: yarn run ember server --port 4201
+      #     background: true
+      # - run:
+      #     command: yarn run ember test
+
+  # test_cases:
+  #   <<: *defaults
+
+  #   requires:
+  #     - install_dependencies
+
+  #   steps:
+  #     - restore-cache: *restore-repo-cache
+
 
 
 workflows:
@@ -62,8 +77,7 @@ workflows:
         - set_env_vars
         - checkout_code
         - install_dependencies
-
-
+        # - test_cases
 
           # GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx1024m -XX:+HeapDumpOnOutOfMemoryError"'
           # XCODE_WORKSPACE: stock.goodcity
