@@ -53,9 +53,9 @@ jobs:
           command: |
             yarn install
             yarn run bower install
-      # - run:
-      #     command: yarn run ember server --port 4201
-      #     background: true
+            yarn run ember server --port 4201
+            yarn run ember test
+          # background: true
       # - run:
       #     command: yarn run ember test
 
