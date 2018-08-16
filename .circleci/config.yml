@@ -78,16 +78,25 @@ jobs:
       # - run:
       #     command: yarn run ember test
 
-  # test_cases:
-  #   <<: *defaults
+  test_cases:
+    <<: *defaults
 
-  #   requires:
-  #     - install_dependencies
+    # requires:
+    #   - package_dependencies:
+    #     requires:
+    #       - checkout_code
 
-  #   steps:
-  #     - restore-cache: *restore-repo-cache
-
-
+    steps:
+      - restore-cache: *restore-repo-cache
+      - restore-cache: *restore-yarn-cache
+      - restore-cache: *restore-bower-cache
+      - run:
+          name: Start Ember test server
+          command: yarn run ember server --port 4201
+          background: true
+      - run:
+          name: Run Ember tests
+          command: yarn test
 
 workflows:
     version: 2
@@ -95,10 +104,11 @@ workflows:
       jobs:
         - set_env_vars
         - checkout_code
+        # - test_cases
         - package_dependencies:
             requires:
               - checkout_code
-        # - test_cases
+        - test_cases
 
           # GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx1024m -XX:+HeapDumpOnOutOfMemoryError"'
           # XCODE_WORKSPACE: stock.goodcity
