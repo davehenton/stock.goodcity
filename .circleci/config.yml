@@ -21,12 +21,12 @@ save-yarn-cache: &save-yarn-cache
     paths:
       - ~/.cache/yarn
       - node_modules
-# restore-bower-cache: &restore-bower-cache
-#     key: v1-bower-components-{{ checksum "bower.json" }}
-# save-bower-cache: &save-bower-cache
-#     key: v1-bower-components-{{ checksum "bower.json" }}
-#     paths:
-      # - bower_components
+restore-bower-cache: &restore-bower-cache
+    key: v1-bower-components-{{ checksum "bower.json" }}
+save-bower-cache: &save-bower-cache
+    key: v1-bower-components-{{ checksum "bower.json" }}
+    paths:
+      - bower_components
 
 jobs:
   set_env_vars:
@@ -59,13 +59,13 @@ jobs:
   package_dependencies:
     <<: *defaults
     steps:
-      # - restore-cache: *restore-repo-cache
+      - restore-cache: *restore-repo-cache
       - restore-cache: *restore-yarn-cache
       - run: yarn install
       - save-cache: *save-yarn-cache
-    #   - restore-cache: *restore-bower-cache
-    #   - run: yarn run bower install
-    #   - save-cache: *save-bower-cache
+      - restore-cache: *restore-bower-cache
+      - run: yarn run bower install
+      - save-cache: *save-bower-cache
 
       # - run:
       #     name: Yarn Install
