@@ -14,13 +14,13 @@ defaults: &defaults
     working_directory: ~/stock.goodcity
 restore-repo-cache: &restore-repo-cache
     key: v1-repo-{{ .Environment.CIRCLE_SHA1 }}
-restore-yarn-cache: &restore-yarn-cache
-    key: v1-yarn-packages-{{ checksum "yarn.lock" }}
-save-yarn-cache: &:save-yarn-cache
-    key: v1-yarn-packages-{{ checksum "yarn.lock" }}
-    paths:
-      - node_modules
-      - ~/.cache/yarn
+# restore-yarn-cache: &restore-yarn-cache
+#     key: v1-yarn-packages-{{ checksum "yarn.lock" }}
+# save-yarn-cache: &:save-yarn-cache
+#     key: v1-yarn-packages-{{ checksum "yarn.lock" }}
+#     paths:
+#       - node_modules
+#       - ~/.cache/yarn
 restore-bower-cache: &restore-bower-cache
     key: v1-bower-components-{{ checksum "bower.json" }}
 save-bower-cache: &save-bower-cache
@@ -61,12 +61,12 @@ jobs:
 
     steps:
       - restore-cache: *restore-repo-cache
-      - restore-cache: *restore-yarn-cache
-      - run: yarn install --non-interactive
-      - save-cache: *save-yarn-cache
-      - restore-cache: *restore-bower-cache
-      - run: yarn run bower install
-      - save-cache: *save-bower-cache
+    #   - restore-cache: *restore-yarn-cache
+    #   - run: yarn install --non-interactive
+    #   - save-cache: *save-yarn-cache
+    #   - restore-cache: *restore-bower-cache
+    #   - run: yarn run bower install
+    #   - save-cache: *save-bower-cache
 
       # - run:
       #     name: Yarn Install
