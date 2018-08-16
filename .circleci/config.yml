@@ -15,7 +15,8 @@ defaults: &defaults
 restore-repo-cache: &restore-repo-cache
     key: v1-repo-{{ .Environment.CIRCLE_SHA1 }}
 restore-yarn-cache: &restore-yarn-cache
-    key: v1-yarn-packages-{{ checksum "yarn.lock" }}
+    keys:
+      - v1-yarn-packages-{{ checksum "yarn.lock" }}
 save-yarn-cache: &:save-yarn-cache
     key: v1-yarn-packages-{{ checksum "yarn.lock" }}
     paths:
