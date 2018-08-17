@@ -10,7 +10,7 @@ version: 2
 
 defaults: &defaults
     docker:
-      - image: circleci/node:6-browsers
+      - image: circleci/node:boron
     working_directory: ~/stock.goodcity
 restore-repo-cache: &restore-repo-cache
     key: v1-repo-{{ .Environment.CIRCLE_SHA1 }}
@@ -21,6 +21,10 @@ save-yarn-cache: &save-yarn-cache
     paths:
       - ~/.cache/yarn
       - node_modules
+- yarn: &yarn
+    |
+      yarn install --non-interactive --cache-folder ~/.cache/yarn --frozen-lockfile
+
 restore-bower-cache: &restore-bower-cache
     key: v1-bower-components-{{ checksum "bower.json" }}
 save-bower-cache: &save-bower-cache
@@ -61,7 +65,7 @@ jobs:
     steps:
       - restore-cache: *restore-repo-cache
       - restore-cache: *restore-yarn-cache
-      - run: yarn install
+      - run: *yarn
       - save-cache: *save-yarn-cache
       - restore-cache: *restore-bower-cache
       - run: yarn run bower install
@@ -81,19 +85,17 @@ jobs:
   test_cases:
     <<: *defaults
 
-    # requires:
-    #   - package_dependencies:
-    #     requires:
-    #       - checkout_code
-
     steps:
       - restore-cache: *restore-repo-cache
       - restore-cache: *restore-yarn-cache
       - restore-cache: *restore-bower-cache
       - run:
           name: Start Ember test server
-          command: yarn run ember server --port 4201
+          command: yarn run ember server --port 4203
           background: true
+      - run:
+          name: Wait for Ember test server to start
+          command: dockerize -wait tcp://localhost:4203 -timeout 1m
       - run:
           name: Run Ember tests
           command: yarn test
@@ -104,11 +106,12 @@ workflows:
       jobs:
         - set_env_vars
         - checkout_code
-        # - test_cases
         - package_dependencies:
             requires:
               - checkout_code
-        - test_cases
+        - test_cases:
+            requires:
+              - package_dependencies
 
           # GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx1024m -XX:+HeapDumpOnOutOfMemoryError"'
           # XCODE_WORKSPACE: stock.goodcity
