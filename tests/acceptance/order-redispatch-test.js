@@ -58,14 +58,14 @@ test("Clicking on Dispatch later changes order state to awaiting dispatch", func
     designations: [order7.toJSON({includeId: true})],
     orders_packages: [orders_package2.toJSON({includeId: true}), orders_package3.toJSON({includeId: true})]
   }});
-  visit("/orders/" + order6.id);
+  visit("/orders/" + order6.id + "/active_items");
 
   andThen(function() {
-    assert.equal(currentPath(), "orders.detail");
+    assert.equal(currentPath(), "orders.active_items");
     click($('.order-option-ellipsis'));
   });
 
   andThen(function() {
-    assert.equal(currentPath(), "orders.detail");
+    assert.equal(currentPath(), "orders.active_items");
   });
 });

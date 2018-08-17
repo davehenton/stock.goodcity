@@ -13,7 +13,7 @@ import { mockFindAll } from 'ember-data-factory-guy';
 
 var App, designation, item1, orders_package1, gc_organisation, user, organisation_user;
 
-module('Acceptance: Order Detail', {
+module('Acceptance: Order summary', {
   beforeEach: function() {
     App = startApp({}, 2);
     user = FactoryGuy.make("user", { mobile: "123456", email: "abc@xyz" });
@@ -39,7 +39,7 @@ module('Acceptance: Order Detail', {
     });
 
     andThen(function(){
-      visit("/orders/" + designation.id);
+      visit("/orders/" + designation.id + "/summary");
     });
 
     mockFindAll('location').returns({json: {locations: [location.toJSON({includeId: true})]}});
@@ -51,16 +51,16 @@ module('Acceptance: Order Detail', {
   }
 });
 
-test("Organisation Detail for Order detail page", function(assert) {
+test("Organisation Detail for Order summary page", function(assert) {
   assert.expect(2);
-  assert.equal(currentPath(), "orders.detail");
+  assert.equal(currentPath(), "orders.summary");
   assert.equal($('.organisation_name').text().trim(), gc_organisation.get("nameEn"));
 });
 
 test("Contact Details for Order detail page", function(assert) {
   assert.expect(6);
 
-  assert.equal(currentPath(), "orders.detail");
+  assert.equal(currentPath(), "orders.summary");
   assert.equal($(".main_details div:eq(5)").text().trim(), user.get("fullName"));
   click($('.icons:eq(0)'));
 

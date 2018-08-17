@@ -1,0 +1,48 @@
+<nav class="tab-bar order_fixed_header">
+  {{partial "orders/orders_back_link_path"}}
+  <section class="right-small">
+    {{partial "orders/review_order_options"}}
+  </section>
+</nav>
+
+<section class="main-section order_page">
+  {{partial "orders/order_status_bar"}}
+  {{partial "orders/order_tabs"}}
+  {{partial "orders/items_list_tabs"}}
+
+  {{#unless (is-or (is-or model.isInactive model.isCancelled) model.isClosed)}}
+    <div class="row add_item_button">
+      <div class=" {{if isMobileApp 'small-9' 'small-12'}} columns">
+          {{#link-to "orders.items" model (query-params searchInput="") class="button expand"}}{{t "order_details.add_item_to_order"}}{{/link-to}}
+      </div>
+      {{#if isMobileApp}}
+        <div class="small-3 columns">
+          {{scan-barcode-button record=model route="orders.items"}}
+        </div>
+      {{/if}}
+    </div>
+  {{/unless}}
+
+  {{#if (is-and model.isGoodCityOrder model.isCancelled)}}
+    {{#each cancelledOrdersPackages as |ordersPackage|}}
+      {{partial "orders/cancelled_orders_packages"}}
+    {{/each}}
+  {{else}}
+    {{#each itemsList as |ordersPackage|}}
+      {{#if ordersPackage.isCancelled}}
+        {{partial "orders/cancelled_orders_packages"}}
+      {{else}}
+        {{partial "orders/orders_packages"}}
+      {{/if}}
+    {{/each}}
+  {{/if}}
+
+  <div class="row show_more" >
+    {{#unless displayAllItems}}
+      <div class="small-12 columns" {{action "displayAllItems"}}>
+        {{t "order_details.show_more_items"}} <i class="fa fa-angle-down back_icon" aria-hidden="true"></i>
+      </div>
+    {{/unless}}
+  </div>
+
+</section>

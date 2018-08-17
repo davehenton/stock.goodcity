@@ -1,0 +1,32 @@
+<section class="left-small">
+  {{#if (is-equal backLinkPath "items.history")}}
+    {{#link-to "items.history" itemIdforHistoryRoute classNames="back" }}
+      <i class="fa fa-angle-left back_icon" aria-hidden="true"></i>
+      <div>{{t "back"}}</div>
+    {{/link-to}}
+  {{else if (is-equal backLinkPath "items.partial_undesignate")}}
+    {{#link-to "items.partial_undesignate" itemIdforHistoryRoute classNames="back" }}
+      <i class="fa fa-angle-left back_icon" aria-hidden="true"></i>
+      <div>{{t "back"}}</div>
+    {{/link-to}}
+  {{else if (is-equal backLinkPath "organisations.orders")}}
+    {{#link-to "organisations.orders" organisationIdforHistoryRoute classNames="back" }}
+      <i class="fa fa-angle-left back_icon" aria-hidden="true"></i>
+      <div>{{t "back"}}</div>
+    {{/link-to}}
+  {{else if (is-equal backLinkPath "items.partial_dispatch")}}
+    {{#link-to "orders.index" classNames="back" }}
+      <i class="fa fa-angle-left back_icon" aria-hidden="true"></i>
+      <div>{{t "back"}}</div>
+    {{/link-to}}
+  {{else}}
+    {{#link-to backLinkPath classNames="back" }}
+      <i class="fa fa-angle-left back_icon" aria-hidden="true"></i>
+      <div>{{t "back"}}</div>
+    {{/link-to}}
+  {{/if}}
+</section>
+
+<section class="middle tab-bar-section">
+  <h1 class="title">{{t "order_details.order"}} {{model.code}}</h1>
+</section>

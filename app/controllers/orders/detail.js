@@ -36,14 +36,22 @@ export default Ember.Controller.extend({
     return (ordersPackages.canonicalState.length) >= 3 ? this.set("displayAllItems", false) : this.set("displayAllItems", true);
   }),
 
-  itemsList: Ember.computed('model.items', 'displayAllItems', 'model.ordersPackages', 'model.ordersPackages.@each.quantity', function() {
-    var ordersPackages = this.get("model.ordersPackages");
+  filteredOrdersPkgsByState(state) {
+    var ordersPackages =  this.get("model.ordersPackages").filterBy('state', state);
+    return this.get("displayAllItems") ? ordersPackages : ordersPackages.slice(0, 3);
+  },
+
+  activeItemsList: Ember.computed('model.items', 'displayAllItems', 'model.ordersPackages', 'model.ordersPackages.@each.quantity', 'model.ordersPackages.@each.state', function() {
+    ordersPackages =  this.get("model.ordersPackages").rejectBy('state', "cancelled").rejectBy("state", "dispatched");
     return this.get("displayAllItems") ? ordersPackages : ordersPackages.slice(0, 3);
   }),
 
-  cancelledOrdersPackages: Ember.computed('model.items', 'displayAllItems', "model.ordersPackages", "model.ordersPackages.@each.quantity", function () {
-    var ordersPackages = this.get("model.ordersPackages").filterBy("state", "cancelled");
-    return this.get("displayAllItems") ? ordersPackages : ordersPackages.slice(0, 3);
+  dispatchedtemsList: Ember.computed('model.items', 'displayAllItems', 'model.ordersPackages', 'model.ordersPackages.@each.quantity', 'model.ordersPackages.@each.state', function() {
+    return this.filteredOrdersPkgsByState("dispatched");
+  }),
+
+  cancelledOrdersPackages: Ember.computed('model.items', 'displayAllItems', "model.ordersPackages", "model.ordersPackages.@each.quantity", 'model.ordersPackages.@each.state', function () {
+    return this.filteredOrdersPkgsByState("cancelled");
   }),
 
   genericCustomPopUp(message, button1text, button2text, btn1Callback) {
@@ -163,6 +171,9 @@ export default Ember.Controller.extend({
           loadingView.destroy();
           if(transition === "close") {
             this.get("appReview").promptReviewModal(true);
+          }
+          if(transition === "cancel") {
+            this.transitionToRoute("orders.canceled_items", order.id);
           }
         });
     }

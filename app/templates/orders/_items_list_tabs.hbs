@@ -1,0 +1,25 @@
+<section class="main-section order_item_list_tabs">
+  <div class="row">
+    <div class="small-12 columns tab_row">
+      <dl class="tabs" data-tab>
+        {{#link-to 'orders.active_items' model.id tagName="dd" classNames="small-4 medium-4 columns text-center"}}
+          {{#link-to 'orders.active_items' model.id}}
+            <div>Active ({{model.designatedOrdersPackages.length}})</div>
+          {{/link-to}}
+        {{/link-to}}
+
+        {{#link-to 'orders.dispatched_items' model.id tagName="dd" classNames="small-4 medium-4 columns text-center"}}
+          {{#link-to 'orders.dispatched_items' model.id}}
+            <div>Dispatched ({{model.dispatchedOrdersPackages.length}})</div>
+          {{/link-to}}
+        {{/link-to}}
+
+        {{#link-to 'orders.canceled_items' model.id tagName="dd" classNames="small-4 medium-4 columns text-center"}}
+          {{#link-to 'orders.canceled_items' model.id}}
+            <div>Canceled ({{model.cancelledOrdersPackages.length}})</div>
+          {{/link-to}}
+        {{/link-to}}
+      </dl>
+    </div>
+  </div>
+</section>

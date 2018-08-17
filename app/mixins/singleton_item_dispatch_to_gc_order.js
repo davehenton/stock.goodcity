@@ -22,20 +22,26 @@ export default Ember.Mixin.create({
       _this.get("i18n").t(button1text),
       () => { btn1CallBack(); },
       _this.get("i18n").t(button2text),
-      () => { this.set("hidden", true); }
-      );
+      () => {
+        if(Ember.$(".receive-options")[0]) {
+          this.set("hidden", true);
+        }
+      });
   },
 
   actions: {
     dispatchOrdersPackagePopUp(item) {
+      if(!item.get("isSingletonItem")) { return false; }
       var _this = this;
-      var designation = item.get("designation");
+      var designation = item.get("ordersPackages").filterBy("state", "designated").get("firstObject").get("designation");
       //Cannot Dispatch warning for non dispatchable states(draft, submitted, processing)
       if(this.canDispatchItems(designation)) {
         _this.get("messageBox").alert(
           _this.get("i18n").t("order_details.complete_process_warning"),
           () => {
-            this.set("hidden", true);
+            if(Ember.$(".receive-options")[0]) {
+              this.set("hidden", true);
+            }
             return false;
           });
       } else if(this.canDispatchOrder(designation)) {
@@ -57,10 +63,8 @@ export default Ember.Mixin.create({
     dispatchItem(item, designation) {
       var _this = this;
       var pkgLocation = item.get("packagesLocations.firstObject");
-
       var packagesLocationQty = [];
       var record = {};
-
       record["packages_location_id"] = pkgLocation.get("id");
       record["qty_to_deduct"] = pkgLocation.get("quantity");
       packagesLocationQty.push(record);
@@ -79,7 +83,9 @@ export default Ember.Mixin.create({
         })
         .finally(
           () => { loadingView.destroy();
-            _this.set("hidden", true);
+            if(Ember.$(".receive-options")[0]) {
+              _this.set("hidden", true);
+            }
             //Check if all Items are dispatched then show close order pop-up
             if(designation.get("allDispatchedOrdersPackages") && designation.get("isDispatching")) {
               this.send("closeOrderPoUp", designation, "close");
@@ -103,12 +109,14 @@ export default Ember.Mixin.create({
         .then(data => {
           data["designation"] = data["order"];
           _this.get("store").pushPayload(data);
-          _this.set("hidden", true);
         })
         .finally(
           () => {
             if(transition === "close") {
               loadingView.destroy();
+            }
+            if(Ember.$(".receive-options")[0]) {
+              _this.set("hidden", true);
             }
           });
     },

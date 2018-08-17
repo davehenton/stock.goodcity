@@ -24,7 +24,7 @@
       {{#if filteredResults}}
         <ul class="list list-activity list-offer-items">
           {{#each filteredResults as |order|}}
-            {{#link-to 'orders.detail' order href=false}}
+            {{#link-to 'orders.items_list' order href=false}}
               {{partial 'orders/order_block'}}
             {{/link-to}}
           {{/each}}

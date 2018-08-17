@@ -1,0 +1,28 @@
+<section class="main-section order_tabs">
+  <div class="row">
+    <div class="small-12 columns tab_row">
+      <dl class="tabs" data-tab>
+        {{#link-to 'orders.summary' model.id tagName="dd" classNames="small-4 medium-4 columns text-center"}}
+          {{#link-to 'orders.summary' model.id}}
+            <i class="fa fa-user"></i>
+            <div>summary</div>
+          {{/link-to}}
+        {{/link-to}}
+
+        {{#link-to 'orders.items_list' model.id tagName="dd" classNames="small-4 medium-4 columns text-center"}}
+          {{#link-to 'orders.items_list' model.id}}
+            <i class="fa item-menu fa fa-shopping-basket"></i>
+            <div>items</div>
+          {{/link-to}}
+        {{/link-to}}
+
+        {{#link-to 'orders.request_items' model.id tagName="dd" classNames="small-4 medium-4 columns text-center"}}
+          {{#link-to 'orders.request_items' model.id}}
+            <i class="fa fa-hand-lizard-o"></i>
+            <div>requests{{abc}}</div>
+          {{/link-to}}
+        {{/link-to}}
+      </dl>
+    </div>
+  </div>
+</section>

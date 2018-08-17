@@ -59,15 +59,15 @@ test("Clicking on Cancel order changes orders state to cancelled", function(asse
     designations: [order6.toJSON({includeId: true})],
     orders_packages: [orders_package2.toJSON({includeId: true}), orders_package3.toJSON({includeId: true})]
   }});
-  visit("/orders/" + order5.id);
+  visit("/orders/" + order5.id + "/active_items");
 
   andThen(function() {
-    assert.equal(currentPath(), "orders.detail");
+    assert.equal(currentPath(), "orders.active_items");
     click($('button.expand')[0]);
   });
 
   andThen(function() {
-    assert.equal(currentPath(), "orders.detail");
+    assert.equal(currentPath(), "orders.active_items");
   });
 });
 

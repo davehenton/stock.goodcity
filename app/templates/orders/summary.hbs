@@ -1,37 +1,5 @@
 <nav class="tab-bar order_fixed_header">
-  <section class="left-small">
-  {{#if (is-equal backLinkPath "items.history")}}
-    {{#link-to "items.history" itemIdforHistoryRoute classNames="back" }}
-      <i class="fa fa-angle-left back_icon" aria-hidden="true"></i>
-      <div>{{t "back"}}</div>
-    {{/link-to}}
-  {{else if (is-equal backLinkPath "items.partial_undesignate")}}
-    {{#link-to "items.partial_undesignate" itemIdforHistoryRoute classNames="back" }}
-      <i class="fa fa-angle-left back_icon" aria-hidden="true"></i>
-      <div>{{t "back"}}</div>
-    {{/link-to}}
-  {{else if (is-equal backLinkPath "organisations.orders")}}
-    {{#link-to "organisations.orders" organisationIdforHistoryRoute classNames="back" }}
-      <i class="fa fa-angle-left back_icon" aria-hidden="true"></i>
-      <div>{{t "back"}}</div>
-    {{/link-to}}
-  {{else if (is-equal backLinkPath "items.partial_dispatch")}}
-    {{#link-to "orders.index" classNames="back" }}
-      <i class="fa fa-angle-left back_icon" aria-hidden="true"></i>
-      <div>{{t "back"}}</div>
-    {{/link-to}}
-  {{else}}
-    {{#link-to backLinkPath classNames="back" }}
-      <i class="fa fa-angle-left back_icon" aria-hidden="true"></i>
-      <div>{{t "back"}}</div>
-    {{/link-to}}
-  {{/if}}
-  </section>
-
-  <section class="middle tab-bar-section">
-    <h1 class="title">{{t "order_details.order"}} {{model.code}}</h1>
-  </section>
-
+  {{partial "orders/orders_back_link_path"}}
   <section class="right-small">
     {{partial "orders/review_order_options"}}
   </section>
@@ -39,6 +7,7 @@
 
 <section class="main-section order_page">
   {{partial "orders/order_status_bar"}}
+  {{partial "orders/order_tabs"}}
   <div class="row">
     <div class="small-12 columns main_details">
       <div class="row">
@@ -134,48 +103,6 @@
       {{/if}}
 
     </div>
-  </div>
-
-  <div class="row">
-    <div class="small-12 columns item_count">
-      <span>{{t "order_details.items"}}</span>
-      ({{model.designatedOrdersPackages.length}} Designated, {{model.dispatchedOrdersPackages.length}} Dispatched, {{model.cancelledOrdersPackages.length}} Cancelled)
-    </div>
-  </div>
-
-  {{#unless (is-or (is-or model.isInactive model.isCancelled) model.isClosed)}}
-    <div class="row add_item_button">
-      <div class=" {{if isMobileApp 'small-9' 'small-12'}} columns">
-          {{#link-to "orders.items" model (query-params searchInput="") class="button expand"}}{{t "order_details.add_item_to_order"}}{{/link-to}}
-      </div>
-      {{#if isMobileApp}}
-        <div class="small-3 columns">
-          {{scan-barcode-button record=model route="orders.items"}}
-        </div>
-      {{/if}}
-    </div>
-  {{/unless}}
-
-  {{#if (is-and model.isGoodCityOrder model.isCancelled)}}
-    {{#each cancelledOrdersPackages as |ordersPackage|}}
-      {{partial "orders/cancelled_orders_packages"}}
-    {{/each}}
-  {{else}}
-    {{#each itemsList as |ordersPackage|}}
-      {{#if ordersPackage.isCancelled}}
-        {{partial "orders/cancelled_orders_packages"}}
-      {{else}}
-        {{partial "orders/orders_packages"}}
-      {{/if}}
-    {{/each}}
-  {{/if}}
-
-  <div class="row show_more" >
-    {{#unless displayAllItems}}
-      <div class="small-12 columns" {{action "displayAllItems"}}>
-        {{t "order_details.show_more_items"}} <i class="fa fa-angle-down back_icon" aria-hidden="true"></i>
-      </div>
-    {{/unless}}
   </div>
 
 </section>

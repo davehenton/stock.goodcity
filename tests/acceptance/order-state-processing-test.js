@@ -58,14 +58,14 @@ test("Clicking on Start processing changes orders state to processing", function
     designations: [designation2.toJSON({includeId: true})],
     orders_packages: [orders_package2.toJSON({includeId: true}), orders_package3.toJSON({includeId: true})]
   }});
-  visit("/orders/" + designation1.id);
+  visit("/orders/" + designation1.id + "/active_items");
 
   andThen(function() {
-    assert.equal(currentPath(), "orders.detail");
+    assert.equal(currentPath(), "orders.active_items");
     click($('button.expand')[0]);
   });
 
   andThen(function() {
-    assert.equal(currentPath(), "orders.detail");
+    assert.equal(currentPath(), "orders.active_items");
   });
 });
