@@ -21,9 +21,8 @@ save-yarn-cache: &save-yarn-cache
     paths:
       - ~/.cache/yarn
       - node_modules
-- yarn: &yarn
-    |
-      yarn install --non-interactive --cache-folder ~/.cache/yarn --frozen-lockfile
+# - yarn: &yarn
+    # - yarn install --non-interactive --cache-folder ~/.cache/yarn --frozen-lockfile
 
 restore-bower-cache: &restore-bower-cache
     key: v1-bower-components-{{ checksum "bower.json" }}
@@ -65,7 +64,7 @@ jobs:
     steps:
       - restore-cache: *restore-repo-cache
       - restore-cache: *restore-yarn-cache
-      - run: *yarn
+      - run: yarn install --non-interactive --cache-folder ~/.cache/yarn
       - save-cache: *save-yarn-cache
       - restore-cache: *restore-bower-cache
       - run: yarn run bower install
