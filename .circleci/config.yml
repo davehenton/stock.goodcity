@@ -8,6 +8,8 @@
 # cases it should duplicate the execution of your original 1.0 config.
 version: 2
 
+
+aliases:
 defaults: &defaults
     docker:
       - image: circleci/node:boron
@@ -21,8 +23,9 @@ save-yarn-cache: &save-yarn-cache
     paths:
       - ~/.cache/yarn
       - node_modules
-# - yarn: &yarn
-    # - yarn install --non-interactive --cache-folder ~/.cache/yarn --frozen-lockfile
+yarn: &yarn
+    |
+      yarn install --non-interactive --cache-folder ~/.cache/yarn
 
 restore-bower-cache: &restore-bower-cache
     key: v1-bower-components-{{ checksum "bower.json" }}
@@ -64,7 +67,7 @@ jobs:
     steps:
       - restore-cache: *restore-repo-cache
       - restore-cache: *restore-yarn-cache
-      - run: yarn install --non-interactive --cache-folder ~/.cache/yarn
+      - run: *yarn
       - save-cache: *save-yarn-cache
       - restore-cache: *restore-bower-cache
       - run: yarn run bower install
