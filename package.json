@@ -59,6 +59,7 @@
     "morgan": "^1.7.0"
   },
   "dependencies": {
+    "phantomjs-prebuilt": "^2.1.14",
     "ember-cli-babel": "^5.1.10",
     "ember-cli-test-loader": "^1.1.0",
     "azure-api": "git://github.com/crossroads/azure-api.git#master",
