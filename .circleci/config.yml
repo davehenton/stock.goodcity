@@ -83,6 +83,14 @@ jobs:
           # background: true
       # - run:
       #     command: yarn run ember test
+  ember_build:
+    <<: *defaults
+    steps:
+      - run: yarn run ember build
+      - persist_to_workspace:
+          root: dist
+          paths:
+            - '*'
 
   test_cases:
     <<: *defaults
@@ -91,13 +99,15 @@ jobs:
       - restore-cache: *restore-repo-cache
       - restore-cache: *restore-yarn-cache
       - restore-cache: *restore-bower-cache
+      - run: echo 'export PATH=$PATH:`yarn bin`' >> $BASH_ENV
       - run:
           name: Start Ember test server
           command: yarn run ember server --port 4203
           background: true
-      - run:
-          name: Wait for Ember test server to start
-          command: dockerize -wait tcp://localhost:4203 -timeout 1m
+      - run: sleep 5
+      # - run:
+      #     name: Wait for Ember test server to start
+      #     command: dockerize -wait tcp://localhost:4203 -timeout 1m
       - run:
           name: Run Ember tests
           command: yarn test
@@ -111,6 +121,9 @@ workflows:
         - package_dependencies:
             requires:
               - checkout_code
+        - ember_build:
+          requires:
+            - package_dependencies
         - test_cases:
             requires:
               - package_dependencies
