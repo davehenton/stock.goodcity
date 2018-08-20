@@ -90,6 +90,12 @@ jobs:
       - run:
           name: Run Ember tests
           command: yarn run ember test
+          environment:
+            COVERAGE: true
+      - persist_to_workspace:
+          root: coverage
+          paths:
+            - lcov*
 
 workflows:
     version: 2
