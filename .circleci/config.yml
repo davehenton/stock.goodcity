@@ -83,14 +83,14 @@ jobs:
           # background: true
       # - run:
       #     command: yarn run ember test
-  ember_build:
-    <<: *defaults
-    steps:
-      - run: yarn run ember build
-      - persist_to_workspace:
-          root: dist
-          paths:
-            - '*'
+  # ember_build:
+  #   <<: *defaults
+  #   steps:
+  #     - run: yarn run ember build
+  #     - persist_to_workspace:
+  #         root: dist
+  #         paths:
+  #           - '*'
 
   test_cases:
     <<: *defaults
@@ -121,9 +121,6 @@ workflows:
         - package_dependencies:
             requires:
               - checkout_code
-        - ember_build:
-          requires:
-            - package_dependencies
         - test_cases:
             requires:
               - package_dependencies
