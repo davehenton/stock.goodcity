@@ -42,7 +42,7 @@ export default Ember.Controller.extend({
   },
 
   activeItemsList: Ember.computed('model.items', 'displayAllItems', 'model.ordersPackages', 'model.ordersPackages.@each.quantity', 'model.ordersPackages.@each.state', function() {
-    ordersPackages =  this.get("model.ordersPackages").rejectBy('state', "cancelled").rejectBy("state", "dispatched");
+    var ordersPackages =  this.get("model.ordersPackages").rejectBy('state', "cancelled").rejectBy("state", "dispatched");
     return this.get("displayAllItems") ? ordersPackages : ordersPackages.slice(0, 3);
   }),
 
