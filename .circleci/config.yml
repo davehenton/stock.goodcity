@@ -92,6 +92,9 @@ jobs:
           command: yarn run ember test
           environment:
             COVERAGE: true
+      - run:
+          name: Create coverage folder
+          command: mkdir -p coverage
       - persist_to_workspace:
           root: coverage
           paths:
