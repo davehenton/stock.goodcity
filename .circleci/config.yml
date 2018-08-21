@@ -97,6 +97,18 @@ jobs:
           paths:
             - lcov*
 
+  upload-coverage:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: ~/stock.goodcity
+      - run:
+          name: Upload coverage results to Code Climate
+          command: |
+            yarn run ember coverage-merge
+            yarn run codeclimate-test-reporter < coverage/lcov.info
+
+
 workflows:
     version: 2
     build_and_bundle:
