@@ -89,27 +89,24 @@ jobs:
           command: dockerize -wait tcp://localhost:4203 -timeout 1m
       - run:
           name: Run Ember tests
-          command: yarn run ember test
-          environment:
-            COVERAGE: true
-      - run:
-          name: Create coverage folder
-          command: mkdir -p coverage
+          command: COVERAGE=true yarn run ember test
       - persist_to_workspace:
-          root: coverage
+          root: .
           paths:
-            - lcov*
+            - coverage*/lcov.info
 
   upload-coverage:
     <<: *defaults
     steps:
+      - restore-cache: *restore-repo-cache
+      - restore-cache: *restore-yarn-cache
+      - restore-cache: *restore-bower-cache
       - attach_workspace:
           at: ~/stock.goodcity
       - run:
           name: Upload coverage results to Code Climate
           command: |
-            yarn run ember coverage-merge
-            yarn run codeclimate-test-reporter < coverage/lcov.info
+            yarn run codeclimate-test-reporter < coverage*/lcov.info
 
 
 workflows:
@@ -124,4 +121,8 @@ workflows:
         - test_cases:
             requires:
               - package_dependencies
+        - upload-coverage:
+            requires:
+              - package_dependencies
+              - test_cases
 
