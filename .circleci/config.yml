@@ -34,6 +34,13 @@ save-bower-cache: &save-bower-cache
     paths:
       - bower_components
 
+restore-bundle-cache: &restore-bundle-cache
+    key: v1-bundle-{{ checksum "Gemfile.lock" }}
+save-bundle-cache: &save-bundle-cache
+    key: v1-bundle-{{ checksum "Gemfile.lock" }}
+    paths:
+        - vendor/bundle
+
 jobs:
   set_env_vars:
     <<: *defaults
@@ -108,7 +115,22 @@ jobs:
           command: |
             yarn run codeclimate-test-reporter < coverage*/lcov.info
 
+  www-deploy:
+    <<: *defaults
 
+    docker:
+      - image: circleci/ruby:2.5.1-node
+    steps:
+      - restore-cache: *restore-repo-cache
+      - restore-cache: *restore-bundle-cache
+      - run: bundle check --path=vendor/bundle || bundle install --deployment --jobs=4 --retry=3
+      - save-cache: *save-bundle-cache
+      - run:
+          name: Setup Environment
+          command: echo 'export STAGE=$(if [ "$CIRCLE_BRANCH" == "live" ]; then echo production; else echo staging; fi)' >> $BASH_ENV
+      - run:
+          name: Print Environment Variables
+          command: echo STAGE=$STAGE
 workflows:
     version: 2
     build_and_bundle:
@@ -125,4 +147,7 @@ workflows:
             requires:
               - package_dependencies
               - test_cases
+        - www-deploy:
+            requires:
+              - package_dependencies
 
